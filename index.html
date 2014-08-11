@@ -33,18 +33,23 @@ window.blue = function (x, y, width, height) {
       h = (y + Math.sin((x*x + sq(y - 700)*5) / 100 / DIM)*35)*s;
   return (Math.floor(scalar * ((x+DIM)*s+h))%2+Math.floor(scalar * ((DIM*2-x)*s+h))%2)*127;
 }
-console.log("reloaded", red, green, blue);
 		</textarea>
 		<script type="text/javascript">
 			var editor = CodeMirror.fromTextArea(document.querySelector("textarea")),
 			    canvas = document.querySelector("canvas"),
 			    ctx = canvas.getContext("2d"),
 			    scanline = 0;
-			
+
+			var state = window.location.hash;
+			if (state.length > 0) {
+				// ya ya, unescape is depracated... deal with it.
+				editor.setValue(unescape(state.substr(1)));
+			}
 
 			function reload() {
 				scanline = 0;
 				eval(editor.getValue());
+				window.location.hash = encodeURIComponent(editor.getValue());
 			}					
 
 					
